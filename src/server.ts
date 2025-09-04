@@ -268,6 +268,15 @@ app.get('/api/docs', (_req: Request, res: Response) => {
   });
 });
 
+// 404 handler
+app.use('*', (req: Request, res: Response) => {
+  res.status(404).json({
+    error: 'Endpoint not found',
+    code: 'NOT_FOUND',
+    path: req.originalUrl,
+  });
+});
+
 // Error handling middleware
 app.use((error: Error, _req: Request, res: Response) => {
   console.error('Unhandled error:', error);
@@ -275,15 +284,6 @@ app.use((error: Error, _req: Request, res: Response) => {
     error: 'Internal server error',
     code: 'INTERNAL_ERROR',
     message: error.message,
-  });
-});
-
-// 404 handler
-app.use('*', (req: Request, res: Response) => {
-  res.status(404).json({
-    error: 'Endpoint not found',
-    code: 'NOT_FOUND',
-    path: req.originalUrl,
   });
 });
 
