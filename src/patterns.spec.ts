@@ -19,7 +19,9 @@ describe('PATTERN_MAP', () => {
 
     for (const reason of expectedReasons) {
       expect(PATTERN_MAP).toHaveProperty(reason);
-      expect(Array.isArray(PATTERN_MAP[reason as keyof typeof PATTERN_MAP])).toBe(true);
+      expect(
+        Array.isArray(PATTERN_MAP[reason as keyof typeof PATTERN_MAP])
+      ).toBe(true);
     }
   });
 
@@ -34,7 +36,7 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of spamTexts) {
-      const hasMatch = spamPatterns.some(pattern => pattern.test(text));
+      const hasMatch = spamPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -42,28 +44,27 @@ describe('PATTERN_MAP', () => {
   test('spam patterns detect excessive repetition', () => {
     const spamPatterns = PATTERN_MAP.spam;
     const repetitiveText = 'aaaaaaaaaa'; // 10+ repeated characters
-    
-    const hasMatch = spamPatterns.some(pattern => pattern.test(repetitiveText));
+
+    const hasMatch = spamPatterns.some((pattern) =>
+      pattern.test(repetitiveText)
+    );
     expect(hasMatch).toBe(true);
   });
 
   test('spam patterns detect excessive caps', () => {
     const spamPatterns = PATTERN_MAP.spam;
     const capsText = 'THIS IS ALL CAPS TEXT';
-    
-    const hasMatch = spamPatterns.some(pattern => pattern.test(capsText));
+
+    const hasMatch = spamPatterns.some((pattern) => pattern.test(capsText));
     expect(hasMatch).toBe(true);
   });
 
   test('hate speech patterns detect discriminatory language', () => {
     const hatePatterns = PATTERN_MAP.hate_speech;
-    const hateTexts = [
-      'All people are stupid',
-      'I hate everyone',
-    ];
+    const hateTexts = ['All people are stupid', 'I hate everyone'];
 
     for (const text of hateTexts) {
-      const hasMatch = hatePatterns.some(pattern => pattern.test(text));
+      const hasMatch = hatePatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -77,34 +78,27 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of threatTexts) {
-      const hasMatch = harassmentPatterns.some(pattern => pattern.test(text));
+      const hasMatch = harassmentPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
 
   test('violence patterns detect explicit violence', () => {
     const violencePatterns = PATTERN_MAP.violence;
-    const violenceTexts = [
-      'I will kill you',
-      'Beat them up',
-      'Use a gun',
-    ];
+    const violenceTexts = ['I will kill you', 'Beat them up', 'Use a gun'];
 
     for (const text of violenceTexts) {
-      const hasMatch = violencePatterns.some(pattern => pattern.test(text));
+      const hasMatch = violencePatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
 
   test('adult content patterns detect explicit content', () => {
     const adultPatterns = PATTERN_MAP.adult_content;
-    const adultTexts = [
-      'Adult content here',
-      'Sex and porn',
-    ];
+    const adultTexts = ['Adult content here', 'Sex and porn'];
 
     for (const text of adultTexts) {
-      const hasMatch = adultPatterns.some(pattern => pattern.test(text));
+      const hasMatch = adultPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -118,7 +112,7 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of misinfoTexts) {
-      const hasMatch = misinfoPatterns.some(pattern => pattern.test(text));
+      const hasMatch = misinfoPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -132,7 +126,7 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of phishingTexts) {
-      const hasMatch = phishingPatterns.some(pattern => pattern.test(text));
+      const hasMatch = phishingPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -147,22 +141,19 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of personalInfoTexts) {
-      const hasMatch = personalInfoPatterns.some(pattern => pattern.test(text));
+      const hasMatch = personalInfoPatterns.some((pattern) =>
+        pattern.test(text)
+      );
       expect(hasMatch).toBe(true);
     }
   });
 
   test('patterns are case insensitive', () => {
     const spamPatterns = PATTERN_MAP.spam;
-    const testTexts = [
-      'CLICK HERE',
-      'click here',
-      'Click Here',
-      'cLiCk HeRe',
-    ];
+    const testTexts = ['CLICK HERE', 'click here', 'Click Here', 'cLiCk HeRe'];
 
     for (const text of testTexts) {
-      const hasMatch = spamPatterns.some(pattern => pattern.test(text));
+      const hasMatch = spamPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(true);
     }
   });
@@ -178,7 +169,7 @@ describe('PATTERN_MAP', () => {
     ];
 
     for (const text of cleanTexts) {
-      const hasMatch = allPatterns.some(pattern => pattern.test(text));
+      const hasMatch = allPatterns.some((pattern) => pattern.test(text));
       expect(hasMatch).toBe(false);
     }
   });

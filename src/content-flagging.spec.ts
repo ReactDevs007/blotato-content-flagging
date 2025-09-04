@@ -1,5 +1,8 @@
 import { describe, expect, test } from 'vitest';
-import { analyzeContent, processContentFlaggingRequest } from './content-flagging.js';
+import {
+  analyzeContent,
+  processContentFlaggingRequest,
+} from './content-flagging.js';
 import type { ContentFlaggingRequest, ContentId, UserId } from './types.js';
 
 describe('analyzeContent', () => {

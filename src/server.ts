@@ -70,8 +70,10 @@ app.post('/api/flag-content', (req: Request, res: Response) => {
         context: {
           ...(context.platform && { platform: context.platform }),
           ...(context.audience && { audience: context.audience }),
-          ...(context.previousFlags !== undefined && { previousFlags: context.previousFlags }),
-        }
+          ...(context.previousFlags !== undefined && {
+            previousFlags: context.previousFlags,
+          }),
+        },
       }),
     };
 
@@ -116,62 +118,72 @@ app.post('/api/flag-content/batch', (req: Request, res: Response) => {
       });
     }
 
-    const responses = requests.map((requestItem: ContentFlaggingRequest, index: number) => {
-      try {
-        const { content, context } = requestItem;
+    const responses = requests.map(
+      (requestItem: ContentFlaggingRequest, index: number) => {
+        try {
+          const { content, context } = requestItem;
 
-        if (!content) {
-          throw new Error(`Request ${index}: Missing required field: content`);
+          if (!content) {
+            throw new Error(
+              `Request ${index}: Missing required field: content`
+            );
+          }
+
+          if (!content.id || !content.userId || !content.type) {
+            throw new Error(
+              `Request ${index}: Content must include id, userId, and type fields`
+            );
+          }
+
+          const validTypes = ['text', 'image', 'video', 'link'];
+          if (!validTypes.includes(content.type)) {
+            throw new Error(`Request ${index}: Invalid content type`);
+          }
+
+          if (!content.text && !content.url) {
+            throw new Error(
+              `Request ${index}: Content must include either text or url field`
+            );
+          }
+
+          const flaggingRequest: ContentFlaggingRequest = {
+            content: {
+              id: content.id,
+              userId: content.userId,
+              type: content.type,
+              ...(content.text && { text: content.text }),
+              ...(content.url && { url: content.url }),
+              ...(content.metadata && { metadata: content.metadata }),
+            },
+            ...(context && {
+              context: {
+                ...(context.platform && { platform: context.platform }),
+                ...(context.audience && { audience: context.audience }),
+                ...(context.previousFlags !== undefined && {
+                  previousFlags: context.previousFlags,
+                }),
+              },
+            }),
+          };
+
+          return processContentFlaggingRequest(flaggingRequest);
+        } catch (error) {
+          return {
+            requestId: `error_${index}_${Date.now()}`,
+            error: error instanceof Error ? error.message : 'Unknown error',
+            result: null,
+            processingTimeMs: 0,
+            timestamp: new Date(),
+          };
         }
-
-        if (!content.id || !content.userId || !content.type) {
-          throw new Error(`Request ${index}: Content must include id, userId, and type fields`);
-        }
-
-        const validTypes = ['text', 'image', 'video', 'link'];
-        if (!validTypes.includes(content.type)) {
-          throw new Error(`Request ${index}: Invalid content type`);
-        }
-
-        if (!content.text && !content.url) {
-          throw new Error(`Request ${index}: Content must include either text or url field`);
-        }
-
-        const flaggingRequest: ContentFlaggingRequest = {
-          content: {
-            id: content.id,
-            userId: content.userId,
-            type: content.type,
-            ...(content.text && { text: content.text }),
-            ...(content.url && { url: content.url }),
-            ...(content.metadata && { metadata: content.metadata }),
-          },
-          ...(context && {
-            context: {
-              ...(context.platform && { platform: context.platform }),
-              ...(context.audience && { audience: context.audience }),
-              ...(context.previousFlags !== undefined && { previousFlags: context.previousFlags }),
-            }
-          }),
-        };
-
-        return processContentFlaggingRequest(flaggingRequest);
-      } catch (error) {
-        return {
-          requestId: `error_${index}_${Date.now()}`,
-          error: error instanceof Error ? error.message : 'Unknown error',
-          result: null,
-          processingTimeMs: 0,
-          timestamp: new Date(),
-        };
       }
-    });
+    );
 
     return res.json({
       batchId: `batch_${Date.now()}`,
       totalRequests: requests.length,
-      successfulRequests: responses.filter(r => !('error' in r)).length,
-      failedRequests: responses.filter(r => 'error' in r).length,
+      successfulRequests: responses.filter((r) => !('error' in r)).length,
+      failedRequests: responses.filter((r) => 'error' in r).length,
       responses,
     });
   } catch (error) {
@@ -211,7 +223,8 @@ app.get('/api/docs', (_req: Request, res: Response) => {
   res.json({
     title: 'Content Flagging API',
     version: '1.0.0',
-    description: 'API for flagging problematic content before posting to social media',
+    description:
+      'API for flagging problematic content before posting to social media',
     endpoints: [
       {
         method: 'POST',

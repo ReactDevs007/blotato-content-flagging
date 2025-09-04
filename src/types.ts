@@ -8,7 +8,7 @@ export type ContentType = 'text' | 'image' | 'video' | 'link';
 
 export type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
-export type FlagReason = 
+export type FlagReason =
   | 'spam'
   | 'hate_speech'
   | 'harassment'

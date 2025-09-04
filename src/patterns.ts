@@ -15,19 +15,15 @@ export const SPAM_PATTERNS = {
     /work from home/i,
     /earn \$?\d+/i,
   ],
-  
+
   // Excessive repetition
   repetition: /(.)\1{4,}/,
-  
+
   // Excessive caps - detect high percentage of caps in text
   excessiveCaps: /\b[A-Z\s]{10,}\b/,
-  
+
   // URL patterns that might be spam
-  suspiciousUrls: [
-    /bit\.ly/i,
-    /tinyurl/i,
-    /short\.link/i,
-  ],
+  suspiciousUrls: [/bit\.ly/i, /tinyurl/i, /short\.link/i],
 } as const;
 
 // Hate speech patterns
@@ -37,11 +33,8 @@ export const HATE_SPEECH_PATTERNS = {
     // For interview purposes, using placeholder patterns
     /\b(hate|stupid|idiot|moron)\b/i,
   ],
-  
-  discriminatory: [
-    /all \w+ are \w+/i,
-    /\w+ people are \w+/i,
-  ],
+
+  discriminatory: [/all \w+ are \w+/i, /\w+ people are \w+/i],
 } as const;
 
 // Harassment patterns
@@ -52,12 +45,8 @@ export const HARASSMENT_PATTERNS = {
     /kill yourself/i,
     /die/i,
   ],
-  
-  intimidation: [
-    /watch your back/i,
-    /you're dead/i,
-    /i know where you live/i,
-  ],
+
+  intimidation: [/watch your back/i, /you're dead/i, /i know where you live/i],
 } as const;
 
 // Violence patterns
@@ -68,33 +57,20 @@ export const VIOLENCE_PATTERNS = {
     /beat \w+ up/i,
     /punch \w+/i,
   ],
-  
-  weapons: [
-    /\b(gun|knife|bomb|weapon)\b/i,
-  ],
+
+  weapons: [/\b(gun|knife|bomb|weapon)\b/i],
 } as const;
 
 // Adult content patterns
 export const ADULT_CONTENT_PATTERNS = {
-  explicit: [
-    /\b(sex|porn|nude|naked)\b/i,
-    /adult content/i,
-  ],
+  explicit: [/\b(sex|porn|nude|naked)\b/i, /adult content/i],
 } as const;
 
 // Misinformation patterns
 export const MISINFORMATION_PATTERNS = {
-  conspiracy: [
-    /conspiracy/i,
-    /government cover/i,
-    /fake news/i,
-  ],
-  
-  medical: [
-    /cure for \w+/i,
-    /miracle drug/i,
-    /doctors don't want/i,
-  ],
+  conspiracy: [/conspiracy/i, /government cover/i, /fake news/i],
+
+  medical: [/cure for \w+/i, /miracle drug/i, /doctors don't want/i],
 } as const;
 
 // Phishing patterns
@@ -105,7 +81,7 @@ export const PHISHING_PATTERNS = {
     /suspended account/i,
     /click to verify/i,
   ],
-  
+
   suspicious: [
     /enter your password/i,
     /confirm your details/i,
@@ -136,26 +112,16 @@ export const PATTERN_MAP: Record<FlagReason, readonly RegExp[]> = {
     ...HARASSMENT_PATTERNS.threats,
     ...HARASSMENT_PATTERNS.intimidation,
   ],
-  violence: [
-    ...VIOLENCE_PATTERNS.explicit,
-    ...VIOLENCE_PATTERNS.weapons,
-  ],
-  adult_content: [
-    ...ADULT_CONTENT_PATTERNS.explicit,
-  ],
+  violence: [...VIOLENCE_PATTERNS.explicit, ...VIOLENCE_PATTERNS.weapons],
+  adult_content: [...ADULT_CONTENT_PATTERNS.explicit],
   misinformation: [
     ...MISINFORMATION_PATTERNS.conspiracy,
     ...MISINFORMATION_PATTERNS.medical,
   ],
-  phishing: [
-    ...PHISHING_PATTERNS.urgency,
-    ...PHISHING_PATTERNS.suspicious,
-  ],
+  phishing: [...PHISHING_PATTERNS.urgency, ...PHISHING_PATTERNS.suspicious],
   copyright_violation: [],
   malware: [],
-  inappropriate_language: [
-    ...HATE_SPEECH_PATTERNS.slurs,
-  ],
+  inappropriate_language: [...HATE_SPEECH_PATTERNS.slurs],
   personal_information: [
     PERSONAL_INFO_PATTERNS.ssn,
     PERSONAL_INFO_PATTERNS.phone,

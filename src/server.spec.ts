@@ -4,9 +4,7 @@ import app from './server.js';
 
 describe('Content Flagging API', () => {
   test('health check endpoint returns healthy status', async () => {
-    const response = await request(app)
-      .get('/health')
-      .expect(200);
+    const response = await request(app).get('/health').expect(200);
 
     expect(response.body).toMatchObject({
       status: 'healthy',
@@ -16,9 +14,7 @@ describe('Content Flagging API', () => {
   });
 
   test('flag-reasons endpoint returns supported reasons', async () => {
-    const response = await request(app)
-      .get('/api/flag-reasons')
-      .expect(200);
+    const response = await request(app).get('/api/flag-reasons').expect(200);
 
     expect(response.body).toMatchObject({
       supportedReasons: expect.arrayContaining([
@@ -38,9 +34,7 @@ describe('Content Flagging API', () => {
   });
 
   test('api docs endpoint returns documentation', async () => {
-    const response = await request(app)
-      .get('/api/docs')
-      .expect(200);
+    const response = await request(app).get('/api/docs').expect(200);
 
     expect(response.body).toMatchObject({
       title: 'Content Flagging API',
@@ -422,9 +416,7 @@ describe('Content Flagging API', () => {
 
   describe('Error handling', () => {
     test('returns 404 for unknown endpoints', async () => {
-      const response = await request(app)
-        .get('/unknown-endpoint')
-        .expect(404);
+      const response = await request(app).get('/unknown-endpoint').expect(404);
 
       expect(response.body).toMatchObject({
         error: 'Endpoint not found',
