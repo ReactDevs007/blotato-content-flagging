@@ -62,15 +62,15 @@ app.post('/api/flag-content', (req: Request, res: Response) => {
         id: content.id,
         userId: content.userId,
         type: content.type,
-        text: content.text,
-        url: content.url,
-        metadata: content.metadata,
+        ...(content.text && { text: content.text }),
+        ...(content.url && { url: content.url }),
+        ...(content.metadata && { metadata: content.metadata }),
       },
       ...(context && {
         context: {
-          platform: context.platform,
-          audience: context.audience,
-          previousFlags: context.previousFlags,
+          ...(context.platform && { platform: context.platform }),
+          ...(context.audience && { audience: context.audience }),
+          ...(context.previousFlags !== undefined && { previousFlags: context.previousFlags }),
         }
       }),
     };
@@ -116,9 +116,9 @@ app.post('/api/flag-content/batch', (req: Request, res: Response) => {
       });
     }
 
-    const responses = requests.map((request: any, index: number) => {
+    const responses = requests.map((requestItem: ContentFlaggingRequest, index: number) => {
       try {
-        const { content, context } = request;
+        const { content, context } = requestItem;
 
         if (!content) {
           throw new Error(`Request ${index}: Missing required field: content`);
@@ -142,15 +142,15 @@ app.post('/api/flag-content/batch', (req: Request, res: Response) => {
             id: content.id,
             userId: content.userId,
             type: content.type,
-            text: content.text,
-            url: content.url,
-            metadata: content.metadata,
+            ...(content.text && { text: content.text }),
+            ...(content.url && { url: content.url }),
+            ...(content.metadata && { metadata: content.metadata }),
           },
           ...(context && {
             context: {
-              platform: context.platform,
-              audience: context.audience,
-              previousFlags: context.previousFlags,
+              ...(context.platform && { platform: context.platform }),
+              ...(context.audience && { audience: context.audience }),
+              ...(context.previousFlags !== undefined && { previousFlags: context.previousFlags }),
             }
           }),
         };
@@ -256,7 +256,7 @@ app.get('/api/docs', (_req: Request, res: Response) => {
 });
 
 // Error handling middleware
-app.use((error: Error, _req: Request, res: Response, _next: any) => {
+app.use((error: Error, _req: Request, res: Response) => {
   console.error('Unhandled error:', error);
   res.status(500).json({
     error: 'Internal server error',

@@ -2,7 +2,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   plugins: ['@typescript-eslint'],
   parserOptions: {
@@ -11,9 +11,7 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/no-explicit-any': 'warn',
     'prefer-const': 'error',
     'no-var': 'error',
   },

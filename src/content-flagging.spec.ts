@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import { analyzeContent, processContentFlaggingRequest } from './content-flagging.js';
-import type { ContentItem, ContentFlaggingRequest } from './types.js';
+import type { ContentFlaggingRequest, ContentId, UserId } from './types.js';
 
 describe('analyzeContent', () => {
   test('returns clean result for empty content', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_1' as any,
-        userId: 'user_1' as any,
+        id: 'content_1' as ContentId,
+        userId: 'user_1' as UserId,
         type: 'text',
         text: '',
       },
@@ -26,8 +26,8 @@ describe('analyzeContent', () => {
   test('detects spam content', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_2' as any,
-        userId: 'user_2' as any,
+        id: 'content_2' as ContentId,
+        userId: 'user_2' as UserId,
         type: 'text',
         text: 'CLICK HERE FOR FREE MONEY!!! ACT NOW!!!',
       },
@@ -43,8 +43,8 @@ describe('analyzeContent', () => {
   test('detects hate speech', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_3' as any,
-        userId: 'user_3' as any,
+        id: 'content_3' as ContentId,
+        userId: 'user_3' as UserId,
         type: 'text',
         text: 'All people are stupid and I hate them',
       },
@@ -60,8 +60,8 @@ describe('analyzeContent', () => {
   test('detects harassment', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_4' as any,
-        userId: 'user_4' as any,
+        id: 'content_4' as ContentId,
+        userId: 'user_4' as UserId,
         type: 'text',
         text: 'You should kill yourself',
       },
@@ -77,8 +77,8 @@ describe('analyzeContent', () => {
   test('detects violence', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_5' as any,
-        userId: 'user_5' as any,
+        id: 'content_5' as ContentId,
+        userId: 'user_5' as UserId,
         type: 'text',
         text: 'I will kill you with my gun',
       },
@@ -94,8 +94,8 @@ describe('analyzeContent', () => {
   test('detects personal information', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_6' as any,
-        userId: 'user_6' as any,
+        id: 'content_6' as ContentId,
+        userId: 'user_6' as UserId,
         type: 'text',
         text: 'My SSN is 123-45-6789 and my phone is 555-123-4567',
       },
@@ -112,8 +112,8 @@ describe('analyzeContent', () => {
   test('detects phishing attempts', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_7' as any,
-        userId: 'user_7' as any,
+        id: 'content_7' as ContentId,
+        userId: 'user_7' as UserId,
         type: 'text',
         text: 'Urgent action required! Verify your account now or it will be suspended!',
       },
@@ -129,8 +129,8 @@ describe('analyzeContent', () => {
   test('detects adult content', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_8' as any,
-        userId: 'user_8' as any,
+        id: 'content_8' as ContentId,
+        userId: 'user_8' as UserId,
         type: 'text',
         text: 'Check out this adult content and porn',
       },
@@ -146,8 +146,8 @@ describe('analyzeContent', () => {
   test('detects misinformation', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_9' as any,
-        userId: 'user_9' as any,
+        id: 'content_9' as ContentId,
+        userId: 'user_9' as UserId,
         type: 'text',
         text: 'This conspiracy theory about government cover-up is real',
       },
@@ -163,8 +163,8 @@ describe('analyzeContent', () => {
   test('handles multiple flag reasons', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_10' as any,
-        userId: 'user_10' as any,
+        id: 'content_10' as ContentId,
+        userId: 'user_10' as UserId,
         type: 'text',
         text: 'CLICK HERE FOR FREE MONEY!!! You should kill yourself!!!',
       },
@@ -182,8 +182,8 @@ describe('analyzeContent', () => {
   test('applies context adjustments for repeat offenders', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_11' as any,
-        userId: 'user_11' as any,
+        id: 'content_11' as ContentId,
+        userId: 'user_11' as UserId,
         type: 'text',
         text: 'This is borderline spam content',
       },
@@ -200,8 +200,8 @@ describe('analyzeContent', () => {
   test('applies platform-specific adjustments', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_12' as any,
-        userId: 'user_12' as any,
+        id: 'content_12' as ContentId,
+        userId: 'user_12' as UserId,
         type: 'text',
         text: 'This is borderline content',
       },
@@ -219,8 +219,8 @@ describe('analyzeContent', () => {
   test('applies audience-specific adjustments', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_13' as any,
-        userId: 'user_13' as any,
+        id: 'content_13' as ContentId,
+        userId: 'user_13' as UserId,
         type: 'text',
         text: 'This is borderline content',
       },
@@ -238,8 +238,8 @@ describe('analyzeContent', () => {
   test('handles URL content', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_14' as any,
-        userId: 'user_14' as any,
+        id: 'content_14' as ContentId,
+        userId: 'user_14' as UserId,
         type: 'link',
         url: 'https://bit.ly/suspicious-link',
       },
@@ -261,8 +261,8 @@ describe('analyzeContent', () => {
     for (const testCase of testCases) {
       const request: ContentFlaggingRequest = {
         content: {
-          id: 'content_test' as any,
-          userId: 'user_test' as any,
+          id: 'content_test' as ContentId,
+          userId: 'user_test' as UserId,
           type: 'text',
           text: testCase.text,
         },
@@ -278,8 +278,8 @@ describe('processContentFlaggingRequest', () => {
   test('returns complete response with metadata', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_15' as any,
-        userId: 'user_15' as any,
+        id: 'content_15' as ContentId,
+        userId: 'user_15' as UserId,
         type: 'text',
         text: 'Clean content that should pass',
       },
@@ -306,8 +306,8 @@ describe('processContentFlaggingRequest', () => {
   test('generates unique request IDs', () => {
     const request: ContentFlaggingRequest = {
       content: {
-        id: 'content_16' as any,
-        userId: 'user_16' as any,
+        id: 'content_16' as ContentId,
+        userId: 'user_16' as UserId,
         type: 'text',
         text: 'Test content',
       },
